@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>StreamHub</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/lucide.js" defer></script>
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <aside class="rail">
+      <a class="brand" href="#" aria-label="StreamHub home">S<span>H</span></a>
+      <nav>
+        <button
+          class="rail-button active"
+          data-view="live"
+          title="Live room"
+          aria-label="Live room"
+        >
+          <i data-lucide="radio"></i></button
+        ><button
+          class="rail-button"
+          data-view="clips"
+          title="Clip review"
+          aria-label="Clip review"
+        >
+          <i data-lucide="clapperboard"></i><b id="rail-count">0</b>
+        </button>
+      </nav>
+      <button
+        class="rail-button bottom"
+        id="open-settings"
+        title="Sources and setup"
+        aria-label="Sources and setup"
+      >
+        <i data-lucide="settings-2"></i>
+      </button>
+    </aside>
+    <div class="shell">
+      <header>
+        <div>
+          <div class="eyebrow">CREATOR WORKSPACE <span>/</span> LOCAL</div>
+          <h1>StreamHub <span>Next</span></h1>
+        </div>
+        <div class="header-actions">
+          <span class="connection" id="server-health"
+            ><span class="dot"></span> Local connection</span
+          ><button id="session-button" class="primary">
+            <i data-lucide="play"></i> Start session
+          </button>
+        </div>
+      </header>
+      <div class="page-heading">
+        <div>
+          <h2 id="page-title">Live room</h2>
+          <p id="page-subtitle">One conversation. Every audience.</p>
+        </div>
+        <div class="session-label">
+          <span id="session-light" class="dot"></span
+          ><span id="session-label">SESSION OFFLINE</span
+          ><span class="timer" id="elapsed">00:00</span>
+        </div>
+      </div>
+      <main id="live-view">
+        <section class="source-strip" aria-label="Platform connections">
+          <div>
+            <span class="platform twitch">T</span>
+            <div>
+              <strong>Twitch</strong
+              ><small id="twitch-detail">Not connected</small>
+            </div>
+            <span id="twitch-state" class="pill">Offline</span>
+          </div>
+          <div>
+            <span class="platform youtube">Y</span>
+            <div>
+              <strong>YouTube</strong
+              ><small id="youtube-detail">Demo adapter</small>
+            </div>
+            <span id="youtube-state" class="pill">Offline</span>
+          </div>
+          <div>
+            <span class="platform tiktok">Tk</span>
+            <div>
+              <strong>TikTok</strong
+              ><small id="tiktok-detail">Demo adapter</small>
+            </div>
+            <span id="tiktok-state" class="pill">Offline</span>
+          </div>
+        </section>
+        <div class="live-grid">
+          <section class="chat-panel">
+            <div class="section-title">
+              <h3><i data-lucide="messages-square"></i> Unified chat</h3>
+              <span class="muted" id="chat-total">0 messages</span>
+            </div>
+            <div class="chat-tools">
+              <div class="segments" id="platform-filters">
+                <button class="active" data-platform="all">All</button
+                ><button data-platform="twitch">Twitch</button
+                ><button data-platform="youtube">YouTube</button
+                ><button data-platform="tiktok">TikTok</button>
+              </div>
+              <button
+                id="pause-chat"
+                class="icon-button"
+                title="Pause chat"
+                aria-label="Pause chat"
+              >
+                <i data-lucide="pause"></i>
+              </button>
+            </div>
+            <label class="search"
+              ><i data-lucide="search"></i
+              ><input
+                id="search"
+                type="search"
+                placeholder="Search messages or chatters"
+                aria-label="Search messages or chatters"
+              /><span id="demo-tag">DEMO</span></label
+            >
+            <div
+              id="chat-feed"
+              class="chat-feed"
+              role="log"
+              aria-label="Unified chat messages"
+            >
+              <div class="empty">
+                <i data-lucide="messages-square"></i>
+                <h3>The room is quiet</h3>
+                <p>Start a session to connect your audiences.</p>
+              </div>
+            </div>
+            <div class="chat-footer">
+              <span
+                ><span class="dot green"></span>
+                <b id="rate-footer">0</b> messages / min</span
+              ><label
+                ><input id="autoscroll" type="checkbox" checked />
+                Autoscroll</label
+              >
+            </div>
+          </section>
+          <div class="right-column">
+            <section class="detector-panel">
+              <div class="section-title">
+                <h3><i data-lucide="activity"></i> Moment radar</h3>
+                <span id="detector-state" class="pill">Standby</span>
+              </div>
+              <div class="radar-score">
+                <div>
+                  <strong id="ratio">0.0<span>×</span></strong
+                  ><small>CHAT VELOCITY / BASELINE</small>
+                </div>
+                <div class="signal-label" id="signal-label">
+                  Awaiting signal
+                </div>
+              </div>
+              <svg
+                id="chart"
+                viewBox="0 0 440 88"
+                preserveAspectRatio="none"
+                role="img"
+                aria-label="Chat velocity over the last 90 seconds"
+              >
+                <path id="chart-area"></path>
+                <path id="chart-line"></path>
+                <path id="baseline-line"></path>
+              </svg>
+              <div class="chart-legend">
+                <span><b class="green-line"></b> Messages / second</span
+                ><span><b></b> Baseline</span><span>90s</span>
+              </div>
+              <div class="metrics">
+                <div>
+                  <strong id="window-count">0</strong
+                  ><small>Messages / 10s</small>
+                </div>
+                <div>
+                  <strong id="unique-count">0</strong
+                  ><small>Unique chatters</small>
+                </div>
+                <div>
+                  <strong id="hype-count">0%</strong><small>Hype density</small>
+                </div>
+              </div>
+              <div class="thresholds">
+                <span id="gate-ratio">2.4× velocity</span
+                ><span id="gate-users">4+ chatters</span
+                ><span id="gate-hype">25% hype</span
+                ><span id="gate-count">8+ messages</span>
+              </div>
+            </section>
+            <section class="preview-panel">
+              <div class="section-title">
+                <h3><i data-lucide="video"></i> Video buffer</h3>
+                <span class="pill amber">SYNTHETIC SOURCE</span>
+              </div>
+              <div class="source-preview">
+                <video
+                  id="source-video"
+                  muted
+                  loop
+                  playsinline
+                  poster="/media/poster.jpg"
+                ></video>
+                <div id="preview-placeholder">NO VIDEO SOURCE</div>
+                <span class="preview-label">LOCAL TEST SIGNAL / 16:9</span>
+              </div>
+              <div class="buffer-status">
+                <span id="buffer-detail">No source running</span
+                ><b id="buffer-time">0s / 240s</b>
+              </div>
+              <progress
+                id="buffer-progress"
+                max="240"
+                value="0"
+                aria-label="Video buffer duration"
+              ></progress>
+            </section>
+            <section class="latest-panel">
+              <div class="section-title">
+                <h3>Latest moment</h3>
+                <button class="text-button" data-view="clips">
+                  Review queue <i data-lucide="arrow-up-right"></i>
+                </button>
+              </div>
+              <div id="latest-moment" class="latest-empty">
+                Listening for the moment that moves chat.
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+      <main id="clips-view" hidden>
+        <div class="queue-toolbar">
+          <div class="segments" id="review-filters">
+            <button data-review="all" class="active">All moments</button
+            ><button data-review="pending">Pending</button
+            ><button data-review="approved">Approved</button
+            ><button data-review="rejected">Rejected</button>
+          </div>
+          <span class="muted">Local review · No automatic posting</span>
+        </div>
+        <div class="review-layout">
+          <section
+            id="moment-list"
+            class="moment-list"
+            aria-label="Moments"
+          ></section>
+          <section id="review-detail" class="review-detail"></section>
+        </div>
+      </main>
+      <footer class="app-footer">
+        <span><span class="dot green"></span> ON-DEVICE WORKSPACE</span
+        ><span id="footer-source">Chat → moment → clip → review</span
+        ><span>StreamHub / 0.1</span>
+      </footer>
+    </div>
+    <dialog id="setup">
+      <form id="setup-form">
+        <div class="setup-top">
+          <span class="eyebrow">STREAMHUB NEXT</span
+          ><button
+            type="button"
+            id="close-setup"
+            class="icon-button"
+            aria-label="Close setup"
+            title="Close"
+          >
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <h2>Bring your room together.</h2>
+        <p>Choose a source for this session.</p>
+        <label class="source-choice"
+          ><input type="radio" name="mode" value="demo" checked /><span
+            ><strong
+              >Demo studio <b class="pill amber">NO CREDENTIALS</b></strong
+            ><small
+              >Simulated chat across three platforms and a local motion-test
+              video. The first audience spike arrives after warm-up.</small
+            ></span
+          ></label
+        ><label class="source-choice"
+          ><input type="radio" name="mode" value="twitch" /><span
+            ><strong>Twitch chat <b class="pill">READ-ONLY</b></strong
+            ><small
+              >Anonymous live chat. Video capture and outgoing replies are not
+              connected.</small
+            ></span
+          ></label
+        ><label class="field"
+          >Twitch channel<input
+            id="channel"
+            name="channel"
+            placeholder="channel_name"
+            maxlength="25"
+            autocomplete="off"
+        /></label>
+        <p class="setup-status" id="setup-status">Checking video tools…</p>
+        <button class="primary full" id="launch" type="submit">
+          <i data-lucide="play"></i> Launch session
+        </button>
+      </form>
+    </dialog>
+    <div id="toast" role="status" hidden></div>
+  </body>
+</html>
