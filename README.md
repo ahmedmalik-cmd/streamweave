@@ -47,7 +47,7 @@ npm start          # http://127.0.0.1:4317
 On Windows, `start.ps1` does the same. Start a session in demo mode and the simulated audiences erupt for a few seconds every 100 seconds, enough to watch the detector fire and a clip get cut; enter a live Twitch channel to see real chat.
 
 ```bash
-npm test                                  # detector, storage and video-pipeline tests
+npm test                                  # detector, storage and video-pipeline tests (also run on every push)
 node scripts/check-twitch.mjs <channel>   # check that a live Twitch channel's chat comes through
 node scripts/remote.mjs                   # optional password-protected remote view
 ```
