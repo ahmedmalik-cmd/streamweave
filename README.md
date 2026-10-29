@@ -34,6 +34,19 @@ demo feeds ─┼─► unified feed ─► detector ─► moment ─► clip f
 - **Video** (`lib/video.mjs`): FFmpeg writes a rolling buffer of `.ts` segments; a clip is cut from the window around each moment and only marked ready once the file has been verified.
 - **Remote view** (optional, `scripts/remote.mjs`): a password-protected proxy on `127.0.0.1:4318`. The credentials are generated on first run into `data/remote-access.json`. It only listens locally, so put a tunnel in front of it if you want to check in from your phone.
 
+### Detection notes
+
+The baseline is a slow, time-adjusted moving average of chat velocity, and it nearly freezes (its rate drops from 0.04 to 0.004) while velocity is above 1.6× baseline. Without that, a fast chat absorbs the spike into its own baseline before the ratio can cross the trigger, which showed up when testing against a busy live Twitch chat. The unique-chatter minimum and the hype-density requirement mean a raid of identical spam from one account can't fire it.
+
+### Next
+
+1. Real YouTube and TikTok adapters (YouTube Data API live chat; TikTok Live).
+2. Recording the streamer's own output (from OBS) instead of the test pattern. An earlier build pulled the live Twitch stream with streamlink.
+3. Posting through the TikTok, YouTube and Instagram APIs, behind the existing review step.
+4. Burned-in captions: transcribe each clip and style the subtitles.
+5. Twitch login, so replies can go out to every chat at once (an earlier build had this), then the same for the other platforms.
+6. Moderation across platforms: one ban or timeout everywhere.
+
 ## Run it
 
 Needs [Node.js 24+](https://nodejs.org) and [FFmpeg](https://ffmpeg.org) on your `PATH` (or set `FFMPEG_PATH`).
