@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const c=JSON.parse(readFileSync('data/remote-access.json','utf8'));
-const base=process.env.STREAMHUB_REMOTE_URL||'http://127.0.0.1:4318';
+const base=process.env.STREAMWEAVE_REMOTE_URL||'http://127.0.0.1:4318';
 assert.equal((await fetch(base)).status,401);
 const headers={Authorization:'Basic '+Buffer.from(`${c.username}:${c.password}`).toString('base64')};
 assert.equal((await fetch(base,{headers})).status,200);

@@ -11,7 +11,7 @@ import os from "node:os";
 import path from "node:path";
 import { RollingBuffer } from "../lib/video.mjs";
 function fixture() {
-  const root = mkdtempSync(path.join(os.tmpdir(), "streamhub-video-"));
+  const root = mkdtempSync(path.join(os.tmpdir(), "streamweave-video-"));
   return { root, clean: () => rmSync(root, { recursive: true, force: true }) };
 }
 test("missing FFmpeg leaves an actionable error, not a starting state", async () => {

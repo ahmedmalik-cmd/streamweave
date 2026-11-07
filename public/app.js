@@ -85,6 +85,7 @@ function renderSession() {
     icon(running || starting ? "square" : "play") +
     (running || starting ? "Stop session" : "Start session");
   $("#session-button").classList.toggle("danger", running || starting);
+  $("#mark-button").hidden = !running;
   $("#demo-tag").hidden = state.session.mode !== "demo";
   icons();
 }
@@ -396,6 +397,14 @@ function openSetup() {
 }
 $("#open-settings").onclick = openSetup;
 $("#close-setup").onclick = () => $("#setup").close();
+$("#mark-button").onclick = async () => {
+  try {
+    await api("/api/mark", "POST");
+    toast("Moment marked. Cutting the clip.");
+  } catch (e) {
+    toast(e.message);
+  }
+};
 $("#session-button").onclick = async () => {
   if (state.session.state === "stopped") return openSetup();
   try {

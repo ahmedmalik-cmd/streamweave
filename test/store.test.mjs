@@ -6,7 +6,7 @@ import path from "node:path";
 import { Store } from "../lib/store.mjs";
 import { acquireLock } from "../lib/lock.mjs";
 test("a second instance cannot use the same data directory", () => {
-  const dir = mkdtempSync(path.join(os.tmpdir(), "streamhub-lock-"));
+  const dir = mkdtempSync(path.join(os.tmpdir(), "streamweave-lock-"));
   try {
     const release = acquireLock(dir);
     assert.throws(() => acquireLock(dir), /already running/);
@@ -17,7 +17,7 @@ test("a second instance cannot use the same data directory", () => {
   }
 });
 test("settings, review decisions and post drafts survive reopening SQLite", () => {
-  const dir = mkdtempSync(path.join(os.tmpdir(), "streamhub-test-"));
+  const dir = mkdtempSync(path.join(os.tmpdir(), "streamweave-test-"));
   try {
     let s = new Store(dir);
     s.saveSettings({ setup: true, channel: "example" });

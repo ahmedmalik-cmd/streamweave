@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-const base = process.env.STREAMHUB_URL || "http://127.0.0.1:4317";
+const base = process.env.STREAMWEAVE_URL || "http://127.0.0.1:4317";
 const state = await fetch(base + "/api/state").then((r) => r.json());
 assert.ok(state.capabilities.ffmpeg);
 const ready = state.moments.find((m) => m.videoState === "ready");
@@ -27,7 +27,7 @@ assert.equal(
   403,
 );
 assert.equal(
-  (await fetch(base + "/media/%2e%2e/streamhub.sqlite")).status,
+  (await fetch(base + "/media/%2e%2e/streamweave.sqlite")).status,
   404,
 );
 const cancelled = state.moments.find((m) => m.videoState === "cancelled");

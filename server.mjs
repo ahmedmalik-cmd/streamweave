@@ -81,7 +81,9 @@ function addMoment(m) {
   const value = {
     ...m,
     id,
-    title: `Audience spike ${new Date(m.at).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}`,
+    title:
+      m.title ??
+      `Audience spike ${new Date(m.at).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}`,
     review: "pending",
     videoState: session.mode === "demo" ? "collecting" : "unavailable",
     videoError:
@@ -196,6 +198,7 @@ const mime = {
   ".json": "application/json",
   ".mp4": "video/mp4",
   ".jpg": "image/jpeg",
+  ".svg": "image/svg+xml",
 };
 function serve(req, res, base, relative) {
   const target = path.resolve(base, relative);
@@ -269,6 +272,12 @@ const server = http.createServer(async (req, res) => {
       await start(b.mode, b.channel ?? "");
       return json(res, { ok: true });
     }
+    if (req.method === "POST" && route === "/api/mark") {
+      if (session.state !== "running")
+        return json(res, { error: "Start a session first" }, 409);
+      addMoment(detector.mark());
+      return json(res, { ok: true });
+    }
     if (req.method === "POST" && route === "/api/stop") {
       stop();
       return json(res, { ok: true });
@@ -293,7 +302,7 @@ const server = http.createServer(async (req, res) => {
       if (req.method === "GET" && match[2] === "/package") {
         res.setHeader(
           "Content-Disposition",
-          `attachment; filename="streamhub-${m.id}.json"`,
+          `attachment; filename="streamweave-${m.id}.json"`,
         );
         return json(res, {
           title: m.title,
@@ -356,7 +365,7 @@ const server = http.createServer(async (req, res) => {
 const port = Number(process.env.PORT || 4317);
 server.listen(port, "127.0.0.1", () => {
   recover();
-  console.log(`StreamHub: http://127.0.0.1:${port}`);
+  console.log(`Streamweave: http://127.0.0.1:${port}`);
 });
 server.on("error", (e) => {
   console.error(e.message);

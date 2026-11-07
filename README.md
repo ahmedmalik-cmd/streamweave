@@ -1,4 +1,6 @@
-# StreamHub
+<img src="public/logo.svg" width="96" alt="Streamweave logo: three strands braided together">
+
+# Streamweave
 
 **One dashboard for streamers who go live on several platforms at once.** Every chat lands in one feed, a detector watches that feed for the moments worth clipping, and each moment is cut from a rolling video buffer and turned into a post draft for TikTok, YouTube Shorts and Instagram Reels.
 
@@ -14,7 +16,7 @@ Multistreamers juggle three chats, and the audience on the platform they're not 
 |---|---|
 | Twitch chat | **Real.** Anonymous IRC, any live channel, no API key |
 | YouTube and TikTok chat | Simulated audiences behind the same adapter interface |
-| Moment detector | **Real**, running on the unified feed |
+| Moment detector | **Real**, running on the unified feed, plus a Mark clip button for calling a moment by hand |
 | Rolling video buffer and clip cutting | **Real** FFmpeg: 4-second segments, each clip cut from 30 s before the spike to 12 s after |
 | Video source | A generated test pattern for now; connecting your actual stream output is the next step |
 | Post packages | Title, caption and per-platform drafts are saved; posting to the platforms isn't wired up |

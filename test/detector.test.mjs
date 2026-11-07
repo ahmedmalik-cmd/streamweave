@@ -37,3 +37,12 @@ test("IRC metadata and untrusted text are preserved as data", () => {
   assert.equal(m.text, "<script> hi");
   assert.equal(parseIRC("PING :tmi.twitch.tv"), null);
 });
+
+test("a manual mark needs no spike and blocks an instant repeat", () => {
+  const d = new Detector(0);
+  d.add({ at: 1000, platform: "twitch", user: "a", text: "hello" });
+  const m = d.mark(2000);
+  assert.equal(m.source, "manual");
+  assert.equal(m.chats.length, 1);
+  assert.equal(d.tick(3000).moment, null);
+});

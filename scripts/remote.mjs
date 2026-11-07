@@ -10,7 +10,7 @@ if (!existsSync(file))
   writeFileSync(
     file,
     JSON.stringify({
-      username: "streamhub",
+      username: "streamweave",
       password: randomBytes(18).toString("base64url"),
     }) + "\n",
     { flag: "wx", mode: 0o600 },
@@ -32,9 +32,9 @@ http
       )
     ) {
       res.writeHead(401, {
-        "WWW-Authenticate": 'Basic realm="StreamHub private preview"',
+        "WWW-Authenticate": 'Basic realm="Streamweave private preview"',
       });
-      return res.end("Sign in to StreamHub.");
+      return res.end("Sign in to Streamweave.");
     }
     if (req.headers.origin) {
       try {
@@ -72,12 +72,12 @@ http
     );
     upstream.on("error", () => {
       if (!res.headersSent) res.writeHead(502);
-      res.end("StreamHub is offline on the Windows PC.");
+      res.end("Streamweave is not running.");
     });
     upstream.setTimeout(210000, () => upstream.destroy());
     res.on("close", () => upstream.destroy());
     req.pipe(upstream);
   })
   .listen(4318, "127.0.0.1", () =>
-    console.log("Password-protected StreamHub proxy: 127.0.0.1:4318"),
+    console.log("Password-protected Streamweave proxy: 127.0.0.1:4318"),
   );
